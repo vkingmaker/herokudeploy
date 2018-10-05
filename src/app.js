@@ -23,10 +23,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Routes
-app.use('/auth', authentication);
-app.use('/orders', orders);
-app.use('/users', users);
-app.use('/menu', menu);
+app.use('/api/v1/auth', authentication);
+app.use('/api/v1/orders', orders);
+app.use('/api/v1/users', users);
+app.use('/api/v1/menu', menu);
 
 
 // Catch 404 and forward to error handler

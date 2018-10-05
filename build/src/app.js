@@ -57,10 +57,10 @@ app.use(_bodyParser2.default.urlencoded({ extended: false }));
 app.use(_express2.default.static(_path2.default.join(__dirname, '../public')));
 
 // Routes
-app.use('/auth', _authentication2.default);
-app.use('/orders', _orders2.default);
-app.use('/users', _users2.default);
-app.use('/menu', _menu2.default);
+app.use('/api/v1/auth', _authentication2.default);
+app.use('/api/v1/orders', _orders2.default);
+app.use('/api/v1/users', _users2.default);
+app.use('/api/v1/menu', _menu2.default);
 
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {
