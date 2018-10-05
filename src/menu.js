@@ -8,9 +8,6 @@ const router = express.Router();
 client.connect()
 .then(() => console.log('connected'))
 .catch(err => console.error('connection error', err.stack));
-client.connect()  
-.then(() => console.log('connected'))
-.catch(err => console.error('connection error', err.stack));
 
 router.get('/',(req,res)=>{
   
