@@ -1,15 +1,11 @@
 import express from 'express';
-// import Client from './config';
-import {Client} from 'pg';
+import client from './config';
+// import {Client} from 'pg';
 import verify from './verify';
 // import { runInNewContext } from 'vm';
 
 const router = express.Router();
 
-const client = new Client({
-  connectionString: process.env.DATABASE || 'postgres://Monday:akubudike1!@localhost/fast-food-fast'
-  // connectionString:'postgres://victor:akubudike1!@localhost/fast-food-fast'
-});
 client.connect()
 .then(() => console.log('connected'))
 .catch(err => console.error('connection error', err.stack));

@@ -12,18 +12,22 @@ var _verify = require('./verify');
 
 var _verify2 = _interopRequireDefault(_verify);
 
-var _pg = require('pg');
+var _config = require('./config');
+
+var _config2 = _interopRequireDefault(_config);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var router = _express2.default.Router();
-// import Client from './config';
+// import {Client} from 'pg';
 
-var client = new _pg.Client({
-    connectionString: process.env.DATABASE || 'postgres://Monday:akubudike1!@localhost/fast-food-fast'
-    // connectionString:'postgres://victor:akubudike1!@localhost/fast-food-fast'
+
+var router = _express2.default.Router();
+_config2.default.connect().then(function () {
+    return console.log('connected');
+}).catch(function (err) {
+    return console.error('connection error', err.stack);
 });
-client.connect().then(function () {
+_config2.default.connect().then(function () {
     return console.log('connected');
 }).catch(function (err) {
     return console.error('connection error', err.stack);
@@ -31,7 +35,7 @@ client.connect().then(function () {
 
 router.get('/', function (req, res) {
 
-    client.query('SELECT * FROM menu', function (error, results) {
+    _config2.default.query('SELECT * FROM menu', function (error, results) {
         if (error) {
             res.json({
                 "code": 400,
@@ -53,7 +57,7 @@ router.route('/').post(_verify2.default.verifyAdmin, function (req, res) {
     var price = +req.body.price;
     var pic_url = req.body.pic_url;
 
-    client.query('INSERT INTO menu (food,description,price,pic_url) VALUES ($1,$2,$3,$4)', [food, description, price, pic_url], function (error) {
+    _config2.default.query('INSERT INTO menu (food,description,price,pic_url) VALUES ($1,$2,$3,$4)', [food, description, price, pic_url], function (error) {
         if (error) {
             res.json({
                 "code": 400,

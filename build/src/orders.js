@@ -12,26 +12,29 @@ var _verify = require('./verify');
 
 var _verify2 = _interopRequireDefault(_verify);
 
+var _config = require('./config');
+
+var _config2 = _interopRequireDefault(_config);
+
 var _pg = require('pg');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var router = _express2.default.Router();
-// import Client from './config';
-
-
-var client = new _pg.Client({
-    connectionString: process.env.DATABASE || 'postgres://Monday:akubudike1!@localhost/fast-food-fast'
-    // connectionString: 'postgres://victor:akubudike1!@localhost/fast-food-fast'
+_config2.default.connect().then(function () {
+    return console.log('connected');
+}).catch(function (err) {
+    return console.error('connection error', err.stack);
 });
-client.connect().then(function () {
+
+_config2.default.connect().then(function () {
     return console.log('connected');
 }).catch(function (err) {
     return console.error('connection error', err.stack);
 });
 
 router.route('/').get(_verify2.default.verifyAdmin, function (req, res) {
-    client.query(' SELECT user_tbl.id,order_tbl.order_id, username , address,instruction,status,phone,food,createdate,modifiedate FROM user_tbl INNER JOIN order_tbl ON uid = user_tbl.id', function (error, results) {
+    _config2.default.query(' SELECT user_tbl.id,order_tbl.order_id, username , address,instruction,status,phone,food,createdate,modifiedate FROM user_tbl INNER JOIN order_tbl ON uid = user_tbl.id', function (error, results) {
 
         if (error) {
             res.json({
@@ -51,7 +54,7 @@ router.route('/').get(_verify2.default.verifyAdmin, function (req, res) {
 router.route('/:id').get(_verify2.default.verifyAdmin, function (req, res) {
     var id = +req.params.id;
 
-    client.query('SELECT * FROM order_tbl WHERE order_id = $1', [id], function (error, results) {
+    _config2.default.query('SELECT * FROM order_tbl WHERE order_id = $1', [id], function (error, results) {
         if (error) {
             res.json({
                 "code": 400,
@@ -75,7 +78,7 @@ router.route('/:id').put(_verify2.default.verifyAdmin, function (req, res) {
 
     if (statusPattern.test(status)) status = req.body.status;
 
-    client.query('UPDATE order_tbl SET (status,modifiedate) = ($1,current_timestamp) WHERE order_id = $2', [status, orderId], function (error) {
+    _config2.default.query('UPDATE order_tbl SET (status,modifiedate) = ($1,current_timestamp) WHERE order_id = $2', [status, orderId], function (error) {
         if (error) {
             res.json({
                 "code": 400,
@@ -105,7 +108,7 @@ router.post('/', function (req, res) {
     var food = Originalfood.map(function (value) {
         return value + "";
     });
-    client.query('INSERT INTO order_tbl (uid,address,instruction,phone,food,createdate,modifiedate) VALUES ($1,$2,$3,$4,ARRAY [$5],current_timestamp,current_timestamp)', [uid, address, instruction, phone, food], function (error, results) {
+    _config2.default.query('INSERT INTO order_tbl (uid,address,instruction,phone,food,createdate,modifiedate) VALUES ($1,$2,$3,$4,ARRAY [$5],current_timestamp,current_timestamp)', [uid, address, instruction, phone, food], function (error, results) {
 
         if (error) {
             res.json({

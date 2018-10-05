@@ -8,7 +8,9 @@ var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
 
-var _pg = require('pg');
+var _config = require('./config');
+
+var _config2 = _interopRequireDefault(_config);
 
 var _verify = require('./verify');
 
@@ -18,14 +20,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // import { runInNewContext } from 'vm';
 
-// import Client from './config';
 var router = _express2.default.Router();
+// import {Client} from 'pg';
 
-var client = new _pg.Client({
-  connectionString: process.env.DATABASE || 'postgres://Monday:akubudike1!@localhost/fast-food-fast'
-  // connectionString:'postgres://victor:akubudike1!@localhost/fast-food-fast'
-});
-client.connect().then(function () {
+
+_config2.default.connect().then(function () {
   return console.log('connected');
 }).catch(function (err) {
   return console.error('connection error', err.stack);
@@ -36,7 +35,7 @@ router.post("/login", function (req, res) {
   var username = req.body.username;
   var password = req.body.password;
 
-  client.query('SELECT * FROM user_tbl WHERE username = $1', [username], function (error, results) {
+  _config2.default.query('SELECT * FROM user_tbl WHERE username = $1', [username], function (error, results) {
 
     if (error) {
       res.json({ "err": error });
@@ -66,7 +65,7 @@ router.post("/signup", function (req, res) {
   if (userPattern.test(req.body.username) && passPattern.test(req.body.password)) {
     username = req.body.username;
     password = req.body.password;
-    client.query('INSERT INTO user_tbl  (username,password) VALUES ($1,$2)', [username, password], function (error) {
+    _config2.default.query('INSERT INTO user_tbl  (username,password) VALUES ($1,$2)', [username, password], function (error) {
       if (error) {
         res.json({
           "code": 400,

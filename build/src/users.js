@@ -8,19 +8,23 @@ var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
 
-var _pg = require('pg');
+var _config = require('./config');
+
+var _config2 = _interopRequireDefault(_config);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+// import {Client} from 'pg';
+
 var router = _express2.default.Router();
-// import Client from './config';
 
-
-var client = new _pg.Client({
-    connectionString: process.env.DATABASE || 'postgres://Monday:akubudike1!@localhost/fast-food-fast'
-    // connectionString: 'postgres://victor:akubudike1!@localhost/fast-food-fast'
+_config2.default.connect().then(function () {
+    return console.log('connected');
+}).catch(function (err) {
+    return console.error('connection error', err.stack);
 });
-client.connect().then(function () {
+
+_config2.default.connect().then(function () {
     return console.log('connected');
 }).catch(function (err) {
     return console.error('connection error', err.stack);
@@ -34,7 +38,7 @@ router.get('/:id/orders', function (req, res) {
         id = req.body.id;
     }
 
-    client.query('SELECT * FROM order_tbl WHERE uid = $1', [id], function (error, results) {
+    _config2.default.query('SELECT * FROM order_tbl WHERE uid = $1', [id], function (error, results) {
         if (results.rows[0] === void 0) {
             res.json({
                 "code": 200,
