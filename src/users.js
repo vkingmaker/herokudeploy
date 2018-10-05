@@ -13,8 +13,8 @@ router.get('/:id/orders',(req,res)=>{
 let id;
 
 let idPattern = /[0-9]+/;
-if(idPattern.test(req.body.id)){
-    id = req.body.id;
+if(idPattern.test(req.params.id)){
+    id = req.params.id;
 }
 
 client.query('SELECT * FROM order_tbl WHERE uid = $1', [id],(error,results)=>{

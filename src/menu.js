@@ -1,7 +1,6 @@
 import express from 'express';
 import  verify  from './verify';
 import client from './config';
-// import {Client} from 'pg';
 
 
 const router = express.Router();
@@ -44,7 +43,7 @@ router.route('/')
         })
     } else {
         res.json({
-            "code": 200,
+            "code": 201,
             "success": "the food has been added to the menu table"
         });
     }

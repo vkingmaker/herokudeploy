@@ -1,8 +1,6 @@
 import express from 'express';
 import client from './config';
-// import {Client} from 'pg';
 import verify from './verify';
-// import { runInNewContext } from 'vm';
 
 const router = express.Router();
 
