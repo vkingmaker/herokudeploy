@@ -1,16 +1,14 @@
 import express from 'express';
 import  verify  from './verify';
 import client from './config';
-import {Client} from 'pg';
+// import {Client} from 'pg';
 
 const router = express.Router();
-client.connect()
-.then(() => console.log('connected'))
-.catch(err => console.error('connection error', err.stack));
 
 client.connect()
 .then(() => console.log('connected'))
 .catch(err => console.error('connection error', err.stack));
+
 
 router.route('/')
 .get(verify.verifyAdmin,(req,res)=>{
